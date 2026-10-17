@@ -1,0 +1,441 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/TomOrth/open-scion",
+  "project": {
+    "id": "d574033e-509d-4952-8cd6-658f7f75d516",
+    "url": "https://linear.app/orth-projects-general/project/open-scion-438e1fe166bf",
+    "teamId": "c8cff230-f4e0-4ee8-a390-440b13b1cd5a"
+  },
+  "milestones": {
+    "F": {
+      "id": "af961383-dcd3-437f-ac67-f8938c14a35f",
+      "name": "01 Foundation and feasibility",
+      "description": "F0–F5: workload/acceptance contract, build and fault harness, PG/Temporal/Restate experiments, native format and local I/O evaluation, Git/reuse baseline and accepted architecture decisions.",
+      "progress": 0,
+      "sortOrder": 99
+    },
+    "M": {
+      "id": "539c9cc2-c7e6-4c32-8d02-c84177f289de",
+      "name": "02 Small-team MVP",
+      "description": "M1–M8: durable storage and domain/read APIs; sparse CLI and web review; CI/landing; Git migration; permissions; install/upgrade/restore; release evidence. Private alpha is M1–M4 plus the minimum M7 recovery subset; HA is separately qualified.",
+      "progress": 0,
+      "sortOrder": 1006
+    },
+    "S": {
+      "id": "57cc9eb4-f569-4999-8f56-d06b2987b47e",
+      "name": "03 Large-organization qualification",
+      "description": "S1–S8: explicit HA/durability profiles, API/worker scale, optional cache tiers and enterprise governance; workload-driven many-repo/hot-monorepo scaling, disaster recovery and enterprise qualification.",
+      "progress": 0,
+      "sortOrder": 1991
+    }
+  },
+  "issues": [
+    {
+      "planId": "F0",
+      "identifier": "SCI-1",
+      "id": "779682f0-1144-4720-86aa-69dc058762b2",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-1/f0-scope-and-workload-contract",
+      "parentPlanId": null,
+      "acceptanceDependencies": [],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "F1",
+      "identifier": "SCI-2",
+      "id": "289dac0e-da98-4881-aee5-d256969b6e73",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-2/f1-build-and-test-spine",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "F0"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "F2",
+      "identifier": "SCI-3",
+      "id": "0c2e1e54-7a3c-4d20-b379-0eb12bb7fe24",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-3/f2-workflow-comparison",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "F3",
+      "identifier": "SCI-4",
+      "id": "e6d58cd8-57ef-4aee-9408-c2dd2175af47",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-4/f3-native-format-and-storage-feasibility",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "F4",
+      "identifier": "SCI-5",
+      "id": "124be940-48b4-4cda-a280-e7184456768c",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-5/f4-git-and-reuse-baseline",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "F5",
+      "identifier": "SCI-6",
+      "id": "8967bcc1-59e2-4068-9c18-31edab38c90b",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-6/f5-architecture-acceptance",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "F2",
+        "F3",
+        "F4"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "M1",
+      "identifier": "SCI-7",
+      "id": "04f91c7d-1796-4749-8886-8e9c9d7d5ebb",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-7/m1-durable-storage-and-authoritative-mutations",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "F5"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "M2",
+      "identifier": "SCI-8",
+      "id": "1db0ea91-fcf7-4437-915b-0426cf8ed26f",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-8/m2-native-repository-engine-and-useful-read-api",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M1"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "M3",
+      "identifier": "SCI-9",
+      "id": "79aa6f13-fe02-485c-b1e4-0895ce5357a9",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-9/m3-safe-developer-workspace-and-browser",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M2"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "M4",
+      "identifier": "SCI-10",
+      "id": "e3d970bb-3bfe-4d5a-9d52-ed95386498a6",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-10/m4-reviews-ci-landing-and-workflow-adoption",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M2",
+        "M3",
+        "F2"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "M5",
+      "identifier": "SCI-11",
+      "id": "23965bc9-5532-4641-acb6-5e7b596c8b56",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-11/m5-git-migration-and-compatibility",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M2",
+        "F4"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "M6",
+      "identifier": "SCI-12",
+      "id": "504e2f47-8a11-4853-8625-b32b4809162a",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-12/m6-finish-the-team-workflow-and-integration-boundaries",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M4",
+        "M5"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "M7",
+      "identifier": "SCI-13",
+      "id": "b2795075-1d8e-4521-a4ae-7a25726a8ffd",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-13/m7-install-upgrade-recover-and-operate",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M4",
+        "M5",
+        "M6"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "M8",
+      "identifier": "SCI-14",
+      "id": "e7872948-7e5b-4f8c-9315-7fe7cc8153bd",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-14/m8-small-team-release-qualification",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7"
+      ],
+      "milestoneId": "539c9cc2-c7e6-4c32-8d02-c84177f289de"
+    },
+    {
+      "planId": "S1",
+      "identifier": "SCI-15",
+      "id": "8f7678ec-0984-4aef-ba12-cc1c2c2971a7",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-15/s1-ha-with-explicit-durability",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M8"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "S2",
+      "identifier": "SCI-16",
+      "id": "5351be91-21ed-4042-a938-b849e6201962",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-16/s2-independent-api-and-worker-scale",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M8"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "S3",
+      "identifier": "SCI-17",
+      "id": "08acad5e-1532-46f3-82fb-c382c76da3ef",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-17/s3-sharedregional-cache-tiers",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "S2"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "S4",
+      "identifier": "SCI-18",
+      "id": "d037dc48-be38-493f-bd8d-9561106e3674",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-18/s4-enterprise-identity-and-governance",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "M8"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "S5",
+      "identifier": "SCI-19",
+      "id": "bcfdb751-d545-4e60-831c-4c85da96ac5d",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-19/s5-many-repository-placement",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "S1",
+        "S2"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "S6",
+      "identifier": "SCI-20",
+      "id": "09cf9913-6ee2-4932-a4ff-4ff9a46d17ed",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-20/s6-hot-monorepo-and-workflow-capacity",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "S1",
+        "S2"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "S7",
+      "identifier": "SCI-21",
+      "id": "cec28e9c-f352-4e4b-ba44-77b5471abf9c",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-21/s7-disaster-recovery-and-geographic-placement",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "S1",
+        "S4"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "S8",
+      "identifier": "SCI-22",
+      "id": "24bda7ad-bffb-4446-ad93-7b35edb5f23f",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-22/s8-enterprise-release-qualification",
+      "parentPlanId": null,
+      "acceptanceDependencies": [
+        "S1",
+        "S2",
+        "S4",
+        "S7"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "A01",
+      "identifier": "SCI-23",
+      "id": "50454023-2af1-4a35-95fc-bb68167224d0",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-23/a01-workload-fixtures",
+      "parentPlanId": "F0",
+      "acceptanceDependencies": [],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A02",
+      "identifier": "SCI-24",
+      "id": "6654362d-0af8-4bfe-89da-d2fd856244d5",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-24/a02-acceptance-contract",
+      "parentPlanId": "F0",
+      "acceptanceDependencies": [
+        "A01"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A03",
+      "identifier": "SCI-25",
+      "id": "2a5baf96-4ef8-4f2c-b72c-462a8bde88f9",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-25/a03-build-and-contract-skeleton",
+      "parentPlanId": "F1",
+      "acceptanceDependencies": [
+        "F0"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A04",
+      "identifier": "SCI-26",
+      "id": "9c1cb788-4617-40e6-91bb-71e14e4ddbab",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-26/a04-domain-transaction-fixture",
+      "parentPlanId": "F1",
+      "acceptanceDependencies": [
+        "A03"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A05",
+      "identifier": "SCI-27",
+      "id": "90309f33-7517-4d07-b07d-41204f4bde05",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-27/a05-independent-ci-simulator-and-fault-runner",
+      "parentPlanId": "F1",
+      "acceptanceDependencies": [
+        "A03"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A06",
+      "identifier": "SCI-28",
+      "id": "e7033e3f-ef50-4811-a00c-582c87687e24",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-28/a06-client-portability-spike",
+      "parentPlanId": "F1",
+      "acceptanceDependencies": [
+        "A03"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A07",
+      "identifier": "SCI-29",
+      "id": "b332454a-2728-491c-aded-12a101ca9b30",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-29/a07-harness-integration-review",
+      "parentPlanId": "F1",
+      "acceptanceDependencies": [
+        "A04",
+        "A05",
+        "A06"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A08",
+      "identifier": "SCI-30",
+      "id": "17b5a867-df04-4ac8-adb9-3d08e242c0dc",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-30/a08-pg-lifecycle-arm",
+      "parentPlanId": "F2",
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A09",
+      "identifier": "SCI-31",
+      "id": "1e36fdca-db5d-43f4-857e-c71f541fb100",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-31/a09-temporal-lifecycle-arm",
+      "parentPlanId": "F2",
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A10",
+      "identifier": "SCI-32",
+      "id": "85a1120d-3111-4c19-b4b5-ea51efe59d89",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-32/a10-restate-lifecycle-arm",
+      "parentPlanId": "F2",
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A11",
+      "identifier": "SCI-33",
+      "id": "af44a12f-f29c-4217-8a89-12a5dba03e0a",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-33/a11-native-feasibility-arm",
+      "parentPlanId": "F3",
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A12",
+      "identifier": "SCI-34",
+      "id": "615c7d5e-39a9-4dde-9816-c8602979538e",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-34/a12-gitreuse-feasibility-arm",
+      "parentPlanId": "F4",
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A13",
+      "identifier": "SCI-35",
+      "id": "1f43fa23-8c5f-4512-b826-7fa4f7ec29a7",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-35/a13-consolidated-decision-review",
+      "parentPlanId": "F5",
+      "acceptanceDependencies": [
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    }
+  ]
+}
