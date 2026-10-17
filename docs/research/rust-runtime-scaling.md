@@ -1,7 +1,7 @@
 # Rust server runtime and scaling research
 
 **Date:** 16 October 2026\
-**Scope:** Rust server execution, transport, admission, CPU isolation, streaming, cache behavior, and operational measurement for Open Scion. This assumes the user has selected Rust for the server. It makes no recommendation to change the separately selected CLI language. This is a research memo, not measured capacity guidance.
+**Scope:** Rust server execution, transport, admission, CPU isolation, streaming, cache behavior, and operational measurement for Deltrove. This assumes the user has selected Rust for the server. It makes no recommendation to change the separately selected CLI language. This is a research memo, not measured capacity guidance.
 
 ## Recommendation
 
@@ -105,7 +105,7 @@ Before choosing production defaults, measure at least these scenarios:
 - Saturation at each semaphore and queue boundary, proving bounded RSS and fast rejection rather than a growing waiter population.
 - Shutdown during active streams, CPU work, upload, and committed-but-unanswered mutations; confirm no partial publication and that retry reconciliation works.
 
-Set acceptance targets from the pilot workload and host, for example a chosen p95 interactive-read objective, a maximum RSS budget, and an upload concurrency target. Record the exact CPU model, memory, object store, DB, data shape, warm/cold cache state, compiler profile and crate versions. Re-run after major dependency/runtime upgrades. Source documentation describes APIs and behavior; it does not establish Open Scion's capacity or an optimal numerical threshold.
+Set acceptance targets from the pilot workload and host, for example a chosen p95 interactive-read objective, a maximum RSS budget, and an upload concurrency target. Record the exact CPU model, memory, object store, DB, data shape, warm/cold cache state, compiler profile and crate versions. Re-run after major dependency/runtime upgrades. Source documentation describes APIs and behavior; it does not establish Deltrove's capacity or an optimal numerical threshold.
 
 ## Source notes and limits
 

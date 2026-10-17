@@ -1,4 +1,4 @@
-# Open Scion: agent-ready implementation roadmap
+# Deltrove: agent-ready implementation roadmap
 
 **Date:** 16 October 2026. **Status:** proposed work, not implemented or tested.\
 **Objective:** deliver a useful self-hosted source-control service for a small team, then qualify a platform for a large organization. The backend, frontend and developer CLI are required throughout. Temporal **and Restate** are early experiments, not deferred enterprise features.

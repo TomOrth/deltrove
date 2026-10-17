@@ -27,7 +27,7 @@ The current [Restate server license](https://github.com/restatedev/restate/blob/
 
 The earlier research excluded Restate from the all-OSS shortlist. The user's new instruction explicitly includes it in testing. **Testing inclusion is now required; mandatory production adoption remains a separate licensing and architecture decision.** An optional integration can be evaluated while preserving an installation path without Restate. This plan neither rejects Restate's technical suitability on license alone nor treats its license as already accepted for every distribution model.
 
-Temporal likewise needs a pinned server/SDK/license inventory and tested APIs; SDK availability is not proof of our application's recovery behavior. See the [Temporal research](research/temporal-durability.md). Neither candidate owns an ACID transaction spanning Scion's DB, object storage and CI.
+Temporal likewise needs a pinned server/SDK/license inventory and tested APIs; SDK availability is not proof of our application's recovery behavior. See the [Temporal research](research/temporal-durability.md). Neither candidate owns an ACID transaction spanning Deltrove's DB, object storage and CI.
 
 ## 3. Shared invariants and observable oracle
 

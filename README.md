@@ -1,13 +1,14 @@
-# Open Scion
+# Deltrove
 
 Research and a proposed technical plan for an open-source, online-first source-control service inspired by [Anthropic's Scion article](https://www.anthropic.com/engineering/redesigning-source-control).
 
 This repository currently contains planning documents only. No VCS, service, CLI or web application is implemented.
 
-Project-owned work is licensed under [Apache-2.0](LICENSE). Implementation work is tracked in the [Open Scion Linear project](https://linear.app/orth-projects-general/project/open-scion-438e1fe166bf); see the [roadmap-to-issue map](docs/project-tracking.md) and [contribution guide](CONTRIBUTING.md) before taking a task.
+Project-owned work is licensed under [Apache-2.0](LICENSE). Implementation work is tracked in the [Deltrove Linear project](https://linear.app/orth-projects-general/project/deltrove-438e1fe166bf); see the [roadmap-to-issue map](docs/project-tracking.md) and [contribution guide](CONTRIBUTING.md) before taking a task.
 
 ## Start here
 
+- [Open-source opportunity assessment](docs/oss-opportunity-assessment.md): demand, direct Scion-inspired competitors, adoption barriers and proposed pilot gates; primary-agent synthesis of three Luna research passes.
 - [Agent-ready implementation roadmap](docs/implementation-roadmap.md): ordered foundation, small-team MVP and large-organization packages; dependencies, parallel agent assignments, acceptance tests and release gates.
 - [Temporal and Restate test plan](docs/workflow-evaluation-plan.md): three-arm comparison against PostgreSQL workers, fault matrix W01–W18, engine-specific upgrade/recovery tests and adoption evidence.
 - [Technical plan](docs/technical-plan.md): architecture, backend/frontend/CLI stack comparison, native data model, APIs, migration, correctness, scaling and implementation milestones.
@@ -30,5 +31,6 @@ Begin with roadmap packages F0/F1, then run workflow, native-format and Git/reus
 | Rust runtime and caching | [Rust runtime research](docs/research/rust-runtime-scaling.md) | Synthesized in the Rust backend scaling plan |
 | Rust operations and verification | [Rust operations research](docs/research/rust-operations-scaling.md) | Synthesized in the Rust backend scaling plan |
 | Durable execution and ACID | [Temporal](docs/research/temporal-durability.md), [DBOS](docs/research/dbos-durability.md), [ACID boundaries](docs/research/acid-workflow-boundaries.md) | Synthesized in the durability and workflow decision |
+| OSS demand, competition and adoption | [Demand](docs/research/oss-demand.md), [landscape](docs/research/oss-landscape.md), [adoption](docs/research/oss-adoption.md) | [Opportunity assessment](docs/oss-opportunity-assessment.md) |
 
 Research was checked on 16 October 2026. Primary sources are linked next to claims. Proposed designs, performance objectives and effort estimates are labeled separately from published facts. No comparative performance experiments have been run.

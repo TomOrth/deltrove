@@ -57,12 +57,12 @@ For a code-review app, start with a lightweight unified patch renderer for list/
 
 ## Concrete MVP workflows
 
-1. `oscn auth login` opens the system browser for OAuth/PKCE, stores a refresh credential in the OS keychain where available, and reports the selected account/server.
-2. `oscn clone <repo> --include src/service` creates a local metadata cache, fetches only the selected tree/files, writes a materialization manifest, and prints exactly what was downloaded and omitted.
-3. `oscn status` lists modified, added, deleted, untracked, and conflicted files; it labels skipped paths as outside scope and never lists them as deletions.
-4. `oscn scope add/remove` previews paths that will materialize or be removed. It refuses to drop dirty files unless the user saves/commits or chooses an explicit preservation action. It can run offline only when the required tree/blob data is cached.
-5. `oscn diff [path]` shows base-to-working changes, including offline edits to materialized files. `oscn commit -m ...` requires a live server and creates an immutable changeset whose parent is the workspace's explicit base, even when that base is behind main. It freezes the selected working-file snapshot before upload; edits made during upload remain dirty for a later commit. A request ID makes retry after a timeout idempotent; failed requests leave working files intact.
-6. `oscn sync` fetches the current head and newly needed selected files, then reconciles the user's offline edits. It either fast-forwards clean files while preserving local edits or writes conflict metadata without discarding user content. `oscn resolve` records a chosen resolution; `oscn merge abort` returns to the pre-merge snapshot. Offline editing/status/diff are MVP features; offline commit queueing is deferred.
+1. `deltrove auth login` opens the system browser for OAuth/PKCE, stores a refresh credential in the OS keychain where available, and reports the selected account/server.
+2. `deltrove clone <repo> --include src/service` creates a local metadata cache, fetches only the selected tree/files, writes a materialization manifest, and prints exactly what was downloaded and omitted.
+3. `deltrove status` lists modified, added, deleted, untracked, and conflicted files; it labels skipped paths as outside scope and never lists them as deletions.
+4. `deltrove scope add/remove` previews paths that will materialize or be removed. It refuses to drop dirty files unless the user saves/commits or chooses an explicit preservation action. It can run offline only when the required tree/blob data is cached.
+5. `deltrove diff [path]` shows base-to-working changes, including offline edits to materialized files. `deltrove commit -m ...` requires a live server and creates an immutable changeset whose parent is the workspace's explicit base, even when that base is behind main. It freezes the selected working-file snapshot before upload; edits made during upload remain dirty for a later commit. A request ID makes retry after a timeout idempotent; failed requests leave working files intact.
+6. `deltrove sync` fetches the current head and newly needed selected files, then reconciles the user's offline edits. It either fast-forwards clean files while preserving local edits or writes conflict metadata without discarding user content. `deltrove resolve` records a chosen resolution; `deltrove merge abort` returns to the pre-merge snapshot. Offline editing/status/diff are MVP features; offline commit queueing is deferred.
 7. Web review lists changes, lazily loads hunks, supports inline/side-by-side view, comments, keyboard navigation, and an accessible unified patch view. It does not need access to a developer's local files.
 
 ## Meaningful early checks

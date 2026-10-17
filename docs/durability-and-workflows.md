@@ -33,7 +33,7 @@ The user subsequently requested Restate testing alongside Temporal. Restate's [s
 
 The proposed ACID unit is **one authoritative repository/domain mutation**, not the hours-long process of review, CI and landing combined. A workflow is a series of transactions and external effects; compensation is not SQL rollback. Cancellation must not automatically undo a landed ref.
 
-| Property | Required Open Scion behavior |
+| Property | Required Deltrove behavior |
 | --- | --- |
 | Atomicity | Publication commits changeset metadata/edges/membership/pins, idempotent outcome and outbox together. Landing commits ref movement, landing result, audit and outbox together. No half-published domain transition. |
 | Consistency | Enforce same-repo parent/object membership, canonical content identity, unique request outcomes, valid state transitions, exact candidate/check binding and protected-ref policy. Database constraints plus domain validation preserve these invariants. |
@@ -80,7 +80,7 @@ Synchronous replication is not a backup against erroneous deletion or corruption
 
 ## 6. How Temporal would integrate
 
-The candidate flow is **prepare candidate -> request CI -> wait/reconcile -> attempt landing -> notify**. Reviews, checks and refs remain in Scion's SQL domain. Workflow inputs and histories carry identifiers, generations and small results, not source blobs, tokens or unbounded logs. Temporal Activities invoke existing idempotent Rust domain commands and bounded compute units; database validation still controls publication. Activities can be retried. [Temporal task model](https://docs.temporal.io/tasks).
+The candidate flow is **prepare candidate -> request CI -> wait/reconcile -> attempt landing -> notify**. Reviews, checks and refs remain in Deltrove's SQL domain. Workflow inputs and histories carry identifiers, generations and small results, not source blobs, tokens or unbounded logs. Temporal Activities invoke existing idempotent Rust domain commands and bounded compute units; database validation still controls publication. Activities can be retried. [Temporal task model](https://docs.temporal.io/tasks).
 
 ```mermaid
 flowchart LR

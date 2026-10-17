@@ -1,4 +1,4 @@
-# Temporal for Open Scion: durability and orchestration assessment
+# Temporal for Deltrove: durability and orchestration assessment
 
 **Checked:** 16 October 2026. **Scope:** Temporal only; research, no implementation. The companion comparison is responsible for DBOS. This memo checks the project’s [technical plan](../technical-plan.md) and [Rust backend scaling plan](../rust-backend-scaling.md).
 

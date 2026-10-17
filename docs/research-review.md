@@ -124,3 +124,17 @@ Earlier research excluded Restate from the all-OSS shortlist. The new user instr
 The user asked whether io_uring and `tokio-uring` fit the Rust backend, then requested that evaluation be added to the plan. The primary agent checked the [official `tokio-uring` API](https://docs.rs/tokio-uring/0.5.0/tokio_uring/), [project README](https://github.com/tokio-rs/tokio-uring), [Tokio file-read API](https://docs.rs/tokio/latest/tokio/fs/fn.read.html) and [runtime builder](https://docs.rs/tokio/latest/tokio/runtime/struct.Builder.html#method.enable_io_uring). These distinguish the separate current-thread/owned-buffer runtime from Tokio's own experimental, operation-specific io_uring support. Generic filesystem documentation and specific-operation documentation differ in coverage descriptions; implementation must pin versions and verify the actual adapter call path.
 
 The roadmap now includes local-I/O comparison in F3/A11, an F5 decision, real adapter durability in M1, release qualification in M8 and disk-cache re-evaluation in S3. Ordinary multithreaded Tokio remains the default. The [detailed experiment](rust-backend-scaling.md#local-file-io-and-io_uring-evaluation) holds budgets/durability constant, checks cancellation and fallback, and requires service-level measurements. No I/O implementation, benchmark or speedup is claimed, and the earlier Luna agents did not review this later addition.
+
+## OSS demand and adoption follow-up
+
+The user requested Luna research into whether a completed Deltrove could become a popular open-source project. Three GPT-6 Luna agents produced [demand](research/oss-demand.md), [landscape](research/oss-landscape.md) and [adoption](research/oss-adoption.md) memos. The primary agent reviewed the memos and key primary sources, then wrote the [opportunity assessment](oss-opportunity-assessment.md).
+
+The finding is a plausible focused infrastructure opportunity with unproven migration demand and broad popularity. GitHub/Anthropic reports support the problem category; Git-compatible tools and incumbent improvements are substantial alternatives. Two direct Scion-inspired implementations already exist, including another OpenScion. Their public scope and licenses were checked, but implementations and benchmark claims were not independently validated.
+
+Review corrected CarterT27/scion's storage description to CockroachDB/S3, distinguished source-available GitButler from OSS comparators, reconciled differing cached popularity snapshots and separated stars from usage. A proposed Git-backed API pilot remains an experiment under existing feasibility gates; it does not change the native architecture or select a production foundation. Adoption advice was aligned with the existing offline contract and bounded workflow-engine evaluation. Proposed interview/pilot thresholds are decision hypotheses, not market estimates. No outreach, customer interviews, deployment trials or Deltrove benchmarks have run.
+
+All three agents reviewed the synthesized opportunity assessment. Refinements clarified attention-versus-usage and high-volume-workload-versus-general-demand evidence; no material contradiction remained. This review is not an independent market validation.
+
+## Product rename
+
+The project name changed from Open Scion to Deltrove after the OSS landscape review identified an independent project using OpenScion. This is a product naming and discoverability decision, not a change to the technical direction.

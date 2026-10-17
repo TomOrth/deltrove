@@ -1,0 +1,99 @@
+# Deltrove OSS demand assessment
+
+**Checked:** 2026-10-16\
+**Question:** Could an Apache-2.0, self-hostable source-control service with a Rust backend, PostgreSQL metadata, immutable object storage, a sparse Go CLI, and React review UI become a popular open-source project if executed well?
+
+## Assessment
+
+**Yes, it could attract a meaningful OSS community, but popularity is plausible rather than the base-case forecast.** There is clear product-level validation for adjacent needs: multiple mainstream coding environments now offer parallel agent sessions with Git worktree isolation, and large-monorepo operators have invested in source-control systems beyond stock Git. That establishes real jobs-to-be-done, not broad demand for replacing Git.
+
+The likely initial audience is much narrower than “developers using AI”: infrastructure teams running high-volume CI and agent fleets against large, frequently updated repositories; teams that need many isolated agent workspaces without repeatedly cloning or materializing the whole repo; and organizations requiring self-hosted source-control data and policy. Those users have measurable operational pain and a reason to evaluate a new server. Small teams using ordinary GitHub/GitLab repositories are a poor initial target unless the product makes agent workspaces or review markedly easier without requiring a wholesale workflow migration.
+
+Deltrove’s technical direction overlaps with the needs Anthropic describes: online clients, server-side source-control operations, sparse/on-demand working copies, and durable object storage. But the reference case also required a custom review surface, search, IAM, merge/landing machinery, and extensive infrastructure. A Rust service plus PostgreSQL and blob storage is a credible starting stack, not evidence that a small-team MVP will deliver Anthropic-scale wins. The product proposition needs a sharp, independently valuable wedge before that scope expands.
+
+My forecast: **a respected niche infrastructure project is attainable; broad developer popularity is possible only if adoption starts without forcing teams to abandon their Git hosting, local tools, agent harnesses, and PR habits.** Git compatibility, reliable exports/backup, easy rollback, and integrations will matter more to early adoption than raw benchmark claims.
+
+## What the evidence supports
+
+### Agent isolation and parallel work are now shipped workflows
+
+As of this check, VS Code documents separate agent sessions using Git worktree isolation for parallel tasks, and explains the limitations: new worktrees start from committed state, ignored dependencies may be absent, and changes still require integration. Its official guide for delegating two tasks recommends separate sessions and a new worktree when changes should remain isolated. These are product defaults and documented workflows, stronger evidence than a viral announcement, though they show demand for isolation rather than demand for a new VCS ([VS Code: agents window](https://code.visualstudio.com/docs/agents/run/agents-window), [VS Code: delegate two tasks](https://code.visualstudio.com/docs/agents/guides/delegate-two-tasks)).
+
+GitHub’s June 2, 2026 public preview describes agent work as “interactive, stateful, and parallel,” and offers local and cloud sandboxes, including the ability to run multiple Copilot tasks in parallel. The product launch validates vendor investment and enterprise concern for isolation and control; it does not disclose user adoption or prove a third-party source-control service is needed ([GitHub Changelog, June 2, 2026](https://github.blog/changelog/2026-06-02-cloud-and-local-sandboxes-for-github-copilot-now-in-public-preview/)). Zed’s current documentation likewise describes concurrent agent threads and worktree isolation ([Zed: Parallel Agents](https://github.com/zed-industries/zed/blob/main/docs/src/ai/parallel-agents.md)).
+
+There are also specific workflow gaps in current approaches. In a GitButler discussion from February 2026, a user asked whether agents could safely work in parallel; a maintainer confirmed that its shared workspace can race when work overlaps and said worktrees were intended as a standard use case. A July 2026 discussion proposed combining worktree isolation with a shared branch workspace. These are **anecdotal reports and feature requests**, useful for generating hypotheses, not prevalence estimates ([GitButler discussion #12228](https://github.com/gitbutlerapp/gitbutler/discussions/12228), [GitButler discussion #14810](https://github.com/gitbutlerapp/gitbutler/discussions/14810)).
+
+The concrete opportunity is therefore not “agents need a new version control system.” It is that worktree-based parallelism adds checkout, dependency, storage, integration, and state-management friction. A server that exposes cheap isolated workspaces, fast sparse reads, durable snapshots, and agent-friendly APIs might improve that loop. The evidence does not yet establish willingness to adopt a replacement backend for that benefit.
+
+### Large repositories have demonstrated source-control bottlenecks, but at exceptional scale
+
+Anthropic’s October 13, 2026 post (updated October 15) reports growth from about 2,500 merged changes per day in May to over 30,000 in September, with a main-branch history near 100 GB, compressed working copy over 25 GB, and around 25 million CI checkouts per day. The company says it operated several hundred Git mirrors and found them harder to operate as merge throughput grew. It explicitly cautions that its workload is unusual and that most organizations do not face these problems in the near term. These are company-reported figures without independent audit; they demonstrate one real, severe case, not average demand ([Anthropic: Redesigning source control](https://www.anthropic.com/engineering/redesigning-source-control)).
+
+Crucially, Anthropic explicitly says Scion is not a general Git replacement: its concepts suit only enormous monorepos with tens of thousands of engineers or swarms of agents; a divergent replacement would force migration of the whole development lifecycle and require its own review, search, and CI. Anthropic’s recommendation is to bring server-side APIs, better storage/serving architecture, and composable sparse/shallow features into the broader Git ecosystem. This is the clearest disconfirming evidence against positioning Deltrove as a wholesale Git replacement. It also suggests an opportunity for a narrower, Git-compatible service layer—if that can deliver meaningful gains without the full migration burden ([Anthropic, “Contributing to the wider ecosystem”](https://www.anthropic.com/engineering/redesigning-source-control)).
+
+GitHub’s October 6, 2026 engineering post is independent evidence that agent-scale repository load is affecting a wider infrastructure surface: it reports GitHub-wide activity more than doubling from 218.2 billion events/month in September 2025 to 473.3 billion in August 2026, 7.38 billion commits in September (over 5x year-over-year), and 4.9x year-over-year growth in pushes. The post describes read fan-out from agents and CI, write throughput, and merge-reference contention, and says GitHub is rebuilding its architecture while preserving existing Git workflows. These are GitHub-reported aggregate metrics and workload observations, not a count of customers who want a new VCS. They make the demand signal stronger for infrastructure that serves agentic Git workloads, while also establishing that the incumbent is investing directly in the problem ([GitHub Engineering, Oct. 6, updated Oct. 7, 2026](https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/)).
+
+Anthropic’s article also describes Scion’s server-oriented model: clients fetch only what they need; history, blame, merges, and other operations are service APIs; sparse/virtual checkouts avoid materializing unused files; changesets reference immutable content in blob storage. Anthropic reports faster CI and a smaller mirror footprint in its own environment. This architecture is relevant precedent for Deltrove’s proposal, but those performance outcomes belong to Anthropic’s design, deployment, workload, and infrastructure; they cannot be projected onto this MVP ([Anthropic, architecture and results](https://www.anthropic.com/engineering/redesigning-source-control)).
+
+Meta’s Sapling provides older, independent precedent: Meta describes a decade of internal scaling work, then open-sourced its client in 2022. Its public repository says the Sapling CLI is usable with Git repositories, while the Mononoke server and EdenFS are not supported for external use. This is a caution as well as validation: large companies have built alternate systems, but operationally complete server deployments are hard to productize for outsiders ([Meta Engineering, Nov. 15, 2022](https://engineering.fb.com/2022/11/15/open-source/sapling-source-control-scalable/), [Sapling repository](https://github.com/facebook/sapling)). Meta’s 2025 account of directory branching says teams adopted it for expensive/disruptive CI, long-running experiments, and migrations, while emphasizing that one version of code remains the monorepo default. This points to targeted use cases, not a universal shift ([Meta Engineering, Oct. 16, 2025](https://engineering.fb.com/2025/10/16/developer-tools/branching-in-a-sapling-monorepo/)).
+
+### Existing tools constrain the opening
+
+Git remains the default because its distributed/offline model is valuable for most repositories; Anthropic itself says this explicitly. Git already offers partial and sparse checkout mechanisms. Jujutsu adds a Git-compatible workflow and colocated mode, but its own docs note performance downsides with many refs and caveats when mixing mutations with Git. GitButler, Sapling, hosted Git providers, and editor/agent worktree tooling already cover parts of the experience ([Anthropic](https://www.anthropic.com/engineering/redesigning-source-control), [Jujutsu Git compatibility](https://github.com/jj-vcs/jj/blob/main/docs/git-compatibility.md), [Sapling](https://github.com/facebook/sapling)).
+
+For a small team, self-hosting creates its own setup, backup, upgrade, security, and availability work. A PostgreSQL/object-store service may reduce repository fan-out or workspace cost only if the user’s actual workload crosses a threshold where those costs exceed operating the service. It may be attractive to platform teams that already run PostgreSQL and S3-compatible storage; it may be a non-starter for a two-person team that can use hosted Git and `git worktree` at no operational cost.
+
+## Best initial customer hypotheses
+
+1. **Agent-heavy platform teams on large monorepos.** They run many local or remote agents and CI jobs against the same repository, and pay for duplicated checkouts, workspace provisioning, or slow setup. Test with repeated real tasks, not a demo benchmark.
+2. **Self-hosting organizations with controlled source-data requirements.** They want agent execution and source history inside their own boundary, and need explicit access policy, audit trails, and backups. This audience may value Apache-2.0 and on-prem deployment, but will expect a higher operational and security bar than an MVP can casually promise.
+3. **Teams with monorepo migration or multi-version needs.** They need isolated long-running experiments, selective directory changes, or staged migration. Meta’s reported directory-branching use cases give direct precedent, though this segment likely needs advanced merge semantics and review integration.
+4. **Agent tooling and CI integrators.** They need APIs for diffs, content reads, history, and snapshots without maintaining full clones. This could make Deltrove a service component rather than a developer-facing Git replacement, but API compatibility and ecosystem integrations become central.
+
+## Disconfirming evidence and risks
+
+- Anthropic’s own post says most organizations do not yet have its scale of problem. The report is timely and compelling, but its announcement can inflate perceived near-term addressable demand.
+- Anthropic explicitly says Scion is not suitable as general Git replacement and advocates adding agent-scale server capabilities within Git-compatible platforms. GitHub’s October post shows the incumbent pursuing exactly that path while promising to preserve Git workflows. This strongly favors an integration/server-extension strategy over demanding a wholesale format or hosting migration.
+- Vendors are addressing parallel tasks with worktrees and cloud sandboxes inside existing Git workflows. This makes “parallel agents” a demand signal for isolation, while simultaneously reducing the need for a new source-control backend.
+- Sapling shows the gap between a useful open client and a production-ready externally supported server. OSS users may try the CLI and still never adopt a new backend.
+- Source-control migration has unusually high switching cost: history, hooks, CI, code review, identity, permissions, compliance, local tools, and developer muscle memory all depend on the existing system. Git import/export and gradual adoption are likely prerequisites.
+- The proposed MVP has a broad surface area (server, storage, CLI, review UI). If no single workflow is much better at small-team scale, contributors may see an impressive architecture with no urgent reason to use it.
+- There is no implementation, deployment, benchmark, contributor base, or user cohort yet. No adoption claim can be made from the project concept alone. Stars, if later accumulated after an announcement, should not substitute for repeated use, successful installs, or migration willingness.
+
+## Low-cost demand tests
+
+The thresholds below are **proposed decision rules for experiments, not established industry benchmarks**. Recruit outside the founders’ immediate friend group where practical; disclose that the prototype is early; ask participants to bring a repository and a current workflow.
+
+| Experiment | What it tests | Proposed threshold to continue |
+|---|---|---|
+| 12–15 structured interviews with platform/DevEx engineers who own large repos or agent runners; collect repo size, checkout frequency, workspace costs, failure modes, and current workarounds. | Whether the pain recurs beyond the Anthropic case and has an owner/budget. | At least 5 independently report a recurring, quantified source-control/workspace bottleneck and at least 3 offer a real repo/workload for a pilot. |
+| Concierge pilot: implement only remote snapshot creation plus sparse workspace materialization for 3–5 teams, with Git import/export around it. Compare against their existing clone/worktree setup on the same task. | Whether service-backed workspaces improve an actual workflow before investing in the full VCS/review surface. | At least 3 teams complete two weeks of recurring use; at least 2 choose to keep it for a follow-on month; setup and task completion beat their baseline on a metric they selected. |
+| Agent harness integration prototype: one CLI/API integration with two agent runners and one CI job; support create workspace, read/write files, diff, and export patch. | Whether agents and CI can benefit without requiring developers to change their everyday Git usage. | 8 of 10 target users complete a task without founder intervention; 4 ask to use it again on their own repo. |
+| Self-host install test: publish a single-node Compose/dev deployment with backup/restore instructions and invite 10 qualified platform teams. | Whether Apache-2.0/self-hosting is an adoption pull and whether operational burden kills the wedge. | 5 install independently; 3 complete a restore drill; 2 ask to connect a non-demo repo or discuss a pilot. |
+| Public design-partner page with a narrowly worded promise (“agent-ready sparse workspaces for your monorepo”) and a request for workload details, not email-only waitlist. | Whether positioning draws qualified users rather than curiosity about Anthropic’s announcement. | 10 qualified workload submissions and 3 pilot calls from 100 targeted outreaches or relevant community placements. |
+
+Stop or narrow the effort if interviews mostly say current Git hosting plus worktrees is adequate, if users only want a managed agent sandbox, or if no team will share even a sanitized workload for a pilot. If teams do volunteer data, make a benchmark around their baseline and publish reproducible results; avoid claiming broad speedups from an artificial repository.
+
+## Decision
+
+Proceed as a demand-validation project, not on the assumption that the Anthropic post proves a market. Start with the smallest differentiated outcome: inexpensive, sparse, durable workspaces for agent and CI jobs, with a Git-compatible escape hatch. A small-team self-hosted MVP is useful as an accessible testbed, but the beachhead should be teams whose clone/worktree/CI costs are already visible. Keep the React review surface narrow until pilots show review is the missing workflow; review and hosting products are entrenched competition.
+
+The most promising route to OSS popularity is to let users retain familiar tools while adopting one useful service capability, then expand only where measured workloads demand it. If adoption requires switching source-control formats, review systems, and agent integrations at once, execution quality alone is unlikely to overcome the migration cost.
+
+## Sources and limitations
+
+Sources were checked on 2026-10-16. Dates above are the publishers’ dates and were confirmed on accessible pages; evidence after the check date is excluded. Official vendor and project material establishes product availability, design claims, and reported internal experience. It does not establish independent market size or broad user adoption. GitHub issues/discussions cited above are anecdotal. This assessment contains no original user interviews, code, benchmarks, install data, or market survey. Anthropic and Meta performance and usage statements are self-reported.
+
+Primary sources:
+
+- [Anthropic, “Redesigning source control at Anthropic,” published Oct. 13, updated Oct. 15, 2026](https://www.anthropic.com/engineering/redesigning-source-control)
+- [GitHub Engineering, “Building Git infrastructure for agent-scale development,” published Oct. 6, updated Oct. 7, 2026](https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/)
+- [GitHub Changelog, “Cloud and local sandboxes for GitHub Copilot now in public preview,” June 2, 2026](https://github.blog/changelog/2026-06-02-cloud-and-local-sandboxes-for-github-copilot-now-in-public-preview/)
+- [VS Code docs, “Use the Agents window”](https://code.visualstudio.com/docs/agents/run/agents-window)
+- [VS Code docs, “Delegate two tasks without mixing their changes”](https://code.visualstudio.com/docs/agents/guides/delegate-two-tasks)
+- [Zed docs, “Parallel Agents”](https://github.com/zed-industries/zed/blob/main/docs/src/ai/parallel-agents.md)
+- [Meta Engineering, “Sapling: Source control that’s user-friendly and scalable,” Nov. 15, 2022](https://engineering.fb.com/2022/11/15/open-source/sapling-source-control-scalable/)
+- [Sapling repository and supported-component notes](https://github.com/facebook/sapling)
+- [Meta Engineering, “Branching in a Sapling Monorepo,” Oct. 16, 2025](https://engineering.fb.com/2025/10/16/developer-tools/branching-in-a-sapling-monorepo/)
+- [Jujutsu Git compatibility documentation](https://github.com/jj-vcs/jj/blob/main/docs/git-compatibility.md)
+- [GitButler discussion #12228, Feb. 5, 2026](https://github.com/gitbutlerapp/gitbutler/discussions/12228) and [discussion #14810, July 16, 2026](https://github.com/gitbutlerapp/gitbutler/discussions/14810)

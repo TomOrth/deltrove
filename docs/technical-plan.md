@@ -1,10 +1,10 @@
-# Open Scion: research-backed technical plan
+# Deltrove: research-backed technical plan
 
 **Date:** 16 October 2026\
 **Status:** proposed architecture; research only, no implementation or performance measurements.\
 **Server language decision:** Rust, selected by the user on 16 October 2026. The CLI remains proposed as Go; the frontend remains React/TypeScript.\
 **Reliability requirement:** ACID authoritative metadata mutations and explicit object/acknowledgment durability; PostgreSQL owns domain correctness. Evaluate Temporal and Restate against PostgreSQL workers early in F2, then qualify the selected approach against real review/CI/landing in M4. See [durability and workflows](durability-and-workflows.md) and the [workflow test plan](workflow-evaluation-plan.md).\
-**Product direction:** start with a small-team, self-hostable MVP and preserve a credible path to a large-organization platform. C and C++ are excluded as implementation-language candidates, per the user's preference. The name and `oscn` command below are provisional.
+**Product direction:** start with a small-team, self-hostable MVP and preserve a credible path to a large-organization platform. C and C++ are excluded as implementation-language candidates, per the user's preference. The `deltrove` command below is proposed.
 
 ## 1. Recommended direction
 
@@ -96,25 +96,25 @@ For a concrete self-hosted S3 integration, evaluate **SeaweedFS first**: its pri
 ### Proposed CLI flow
 
 ```text
-oscn auth login --server https://source.example.org
-oscn clone team/repository --include services/payments --include libs/common
-oscn status
-oscn add path/to/new-file
-oscn diff
-oscn commit -m "Validate payment requests"       # server creates immutable draft
-oscn review create --target main
-oscn review open
-oscn review land --wait                         # queues policy-checked landing
-oscn sync                                      # fetch and safely update workspace
+deltrove auth login --server https://source.example.org
+deltrove clone team/repository --include services/payments --include libs/common
+deltrove status
+deltrove add path/to/new-file
+deltrove diff
+deltrove commit -m "Validate payment requests"       # server creates immutable draft
+deltrove review create --target main
+deltrove review open
+deltrove review land --wait                         # queues policy-checked landing
+deltrove sync                                      # fetch and safely update workspace
 ```
 
 Also specify `scope add/remove`, `log`, `show`, `file`, `merge-base`, `resolve`, `merge abort`, `cache inspect/prune`, `doctor`, and administrative `import-git`, `export-git`, `fsck`, `backup` and `restore` operations. Separate local and administrative credentials. `commit` never advances protected main by itself; `land` does.
 
 Offer stable `--json`, pagination, noninteractive authentication, deadlines, cancellation, machine-readable conflict details and documented exit codes. Diagnostics go to stderr. Mutations use idempotency keys. Agents use the same permission model as people, with narrower scoped credentials.
 
-`commit` snapshots an explicit workspace parent and an immutable copy of the selected changes. It does not require the current main tip. Edits made while upload runs remain as subsequent dirty work, and a successful response advances only the local recorded base to the accepted snapshot. A lost response is reconciled by operation ID before retry or workspace-state changes. Add `oscn rm` and `oscn restore` with explicit path selection and previews; a dirty restore must preserve a recoverable preimage.
+`commit` snapshots an explicit workspace parent and an immutable copy of the selected changes. It does not require the current main tip. Edits made while upload runs remain as subsequent dirty work, and a successful response advances only the local recorded base to the accepted snapshot. A lost response is reconciled by operation ID before retry or workspace-state changes. Add `deltrove rm` and `deltrove restore` with explicit path selection and previews; a dirty restore must preserve a recoverable preimage.
 
-`sync` fetches the chosen target and fast-forwards a clean workspace when possible; a diverged draft or overlapping dirty edits produces an explicit reconciliation requirement. `oscn merge <target>` requests a server merge plan and applies its result through the workspace journal. It creates a new immutable revision after resolution; it never silently rebases published drafts or resolves conflicts. `merge abort` restores the saved pre-merge state while preserving edits made during the operation as recovery data.
+`sync` fetches the chosen target and fast-forwards a clean workspace when possible; a diverged draft or overlapping dirty edits produces an explicit reconciliation requirement. `deltrove merge <target>` requests a server merge plan and applies its result through the workspace journal. It creates a new immutable revision after resolution; it never silently rebases published drafts or resolves conflicts. `merge abort` restores the saved pre-merge state while preserving edits made during the operation as recovery data.
 
 **Offline contract:** files already materialized remain editable, and cached base data permits local status/diff. Server commits, missing history and uncached objects require connectivity. A local recovery checkpoint is not an accepted server changeset. Offline commit queues are deferred to avoid a second authority model in the MVP.
 

@@ -42,7 +42,7 @@ This staged recommendation is a proposed design judgment. No performance claim f
 - Meta's current GitHub `main` source is public but explicitly not externally supported for Mononoke/EdenFS. OSS buildability is not the same as an operable production service.
 - Google's primary publication record is accessible, but the full text was not; details of CitC's architecture remain unverified in this memo.
 - License labels are repository-level starting points, not a complete software bill of materials. Check notices, generated code, bundled dependencies, and each subdirectory before copying code.
-- Performance figures published by the organizations describe their own systems and workloads. No figure should be used as an Open Scion target without a benchmark using the actual repository shape, client mix, network, and CI access patterns.
+- Performance figures published by the organizations describe their own systems and workloads. No figure should be used as a Deltrove target without a benchmark using the actual repository shape, client mix, network, and CI access patterns.
 
 ## Primary sources consulted
 

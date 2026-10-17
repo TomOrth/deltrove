@@ -1,8 +1,8 @@
-# Contributing to Open Scion
+# Contributing to Deltrove
 
-Open Scion is currently a planning-stage project. Architecture, experiments and acceptance gates are documented in the [implementation roadmap](docs/implementation-roadmap.md); implementation has not started.
+Deltrove is currently a planning-stage project. Architecture, experiments and acceptance gates are documented in the [implementation roadmap](docs/implementation-roadmap.md); implementation has not started.
 
-Work is tracked in the [Open Scion Linear project](https://linear.app/orth-projects-general/project/open-scion-438e1fe166bf). The [tracking map](docs/project-tracking.md) connects roadmap IDs to Linear issues. Repository documents own architecture and acceptance semantics; Linear owns current status, dependencies and assignments. There is no automatic bidirectional synchronization configured.
+Work is tracked in the [Deltrove Linear project](https://linear.app/orth-projects-general/project/deltrove-438e1fe166bf). The [tracking map](docs/project-tracking.md) connects roadmap IDs to Linear issues. Repository documents own architecture and acceptance semantics; Linear owns current status, dependencies and assignments. There is no automatic bidirectional synchronization configured.
 
 ## Picking up work
 

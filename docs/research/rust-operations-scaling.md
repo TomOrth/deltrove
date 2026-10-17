@@ -73,7 +73,7 @@ Specific experiments before HA claim: (1) lease-expiry race with old worker paus
 - [PostgreSQL `SELECT` and `SKIP LOCKED`](https://www.postgresql.org/docs/current/sql-select.html) — queue consumers, with warning that skipped rows are not a general consistent view.
 - [PostgreSQL explicit locking](https://www.postgresql.org/docs/current/explicit-locking.html) — row-level conflict behavior.
 - [PostgreSQL continuous archiving/PITR](https://www.postgresql.org/docs/current/continuous-archiving.html) — WAL-based restore and standby mechanisms.
-- [Google SRE: Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) — user-facing SLIs, separate workload classes, and error budgets; it does not set Open Scion targets.
+- [Google SRE: Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) — user-facing SLIs, separate workload classes, and error budgets; it does not set Deltrove targets.
 
 ## Uncertainties
 

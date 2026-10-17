@@ -1,6 +1,6 @@
 # Project tracking
 
-The [GitHub repository](https://github.com/TomOrth/open-scion) contains the architecture and implementation plan. The [Open Scion Linear project](https://linear.app/orth-projects-general/project/open-scion-438e1fe166bf) in the OpenScion (SCI) team tracks execution.
+The [GitHub repository](https://github.com/TomOrth/deltrove) contains the architecture and implementation plan. The [Deltrove Linear project](https://linear.app/orth-projects-general/project/deltrove-438e1fe166bf) in the OpenScion (SCI) team tracks execution.
 
 Project-owned work is licensed under [Apache-2.0](../LICENSE). The implementation has not started. Issues were seeded in Backlog without assignees or dates; consult Linear for live status rather than inferring it from this map.
 
