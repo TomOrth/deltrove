@@ -10,7 +10,7 @@
     "F": {
       "id": "af961383-dcd3-437f-ac67-f8938c14a35f",
       "name": "01 Foundation and feasibility",
-      "description": "F0–F5: workload/acceptance contract, build and fault harness, PG/Temporal/Restate experiments, native format and local I/O evaluation, Git/reuse baseline and accepted architecture decisions.",
+      "description": "F0–F5: workload/acceptance contract, build and fault harness, PG/Temporal/Restate experiments, native format/local I/O, bounded SQL compatibility/isolation and cache evaluation contract, Git/reuse baseline and accepted architecture decisions or explicit deferrals.",
       "progress": 0,
       "sortOrder": 99
     },
@@ -24,7 +24,7 @@
     "S": {
       "id": "57cc9eb4-f569-4999-8f56-d06b2987b47e",
       "name": "03 Large-organization qualification",
-      "description": "S1–S8: explicit HA/durability profiles, API/worker scale, optional cache tiers and enterprise governance; workload-driven many-repo/hot-monorepo scaling, disaster recovery and enterprise qualification.",
+      "description": "S1–S8: explicit HA/durability, API/worker scale, optional Dragonfly/Valkey cache qualification and enterprise governance; workload-triggered distributed SQL comparison/migration, many-repo/hot-monorepo scaling, DR and advertised-capability release evidence.",
       "progress": 0,
       "sortOrder": 1991
     }
@@ -436,6 +436,64 @@
         "A12"
       ],
       "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A14",
+      "identifier": "SCI-36",
+      "id": "ac69d9c8-81f5-4139-b911-a69fa0cc1bcc",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-36/a14-common-metadatacache-evaluation-contract",
+      "parentPlanId": "F3",
+      "acceptanceDependencies": [
+        "F1"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A15",
+      "identifier": "SCI-37",
+      "id": "155a071b-338f-45b3-b057-45a48894dbf5",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-37/a15-distributed-sql-compatibility-and-isolation-spike",
+      "parentPlanId": "F3",
+      "acceptanceDependencies": [
+        "A14"
+      ],
+      "milestoneId": "af961383-dcd3-437f-ac67-f8938c14a35f"
+    },
+    {
+      "planId": "A16",
+      "identifier": "SCI-38",
+      "id": "adbf4e8a-8e29-4847-a875-539d04315e90",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-38/a16-shared-cache-qualification-shared-process-local-and-disk-baselines",
+      "parentPlanId": "S3",
+      "acceptanceDependencies": [
+        "S2",
+        "A14"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "A17",
+      "identifier": "SCI-39",
+      "id": "1fc085f5-4b27-4744-ad42-17d96710c3ae",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-39/a17-conditional-distributed-sql-capacity-comparison",
+      "parentPlanId": "S6",
+      "acceptanceDependencies": [
+        "S1",
+        "S2",
+        "A15"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
+    },
+    {
+      "planId": "A18",
+      "identifier": "SCI-40",
+      "id": "62062cb6-da71-4c2b-b289-703a2079331c",
+      "url": "https://linear.app/orth-projects-general/issue/SCI-40/a18-conditional-selected-engine-migration-restore-rollback-and-epoch",
+      "parentPlanId": "S6",
+      "acceptanceDependencies": [
+        "A17"
+      ],
+      "milestoneId": "57cc9eb4-f569-4999-8f56-d06b2987b47e"
     }
   ]
 }

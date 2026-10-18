@@ -121,6 +121,8 @@ Use one SQLx pool per intended connection class/process and clone handles to it.
 
 Correctness-critical domain mutations now start at `SERIALIZABLE`, with full retry handling, stable idempotency outcomes and necessary constraints/CAS. Profile retry/lock costs under the actual workload before considering a reviewed lower-isolation optimization. This is distinct from a workflow engine's durable retry semantics.
 
+The [distributed metadata research](research/distributed-metadata.md) and [metadata evaluation plan](metadata-evaluation-plan.md) define the staged CockroachDB/TiDB comparison. Retain SQLx/PostgreSQL as the production baseline; PostgreSQL wire compatibility does not prove equivalent migrations, locking/job claims, constraints or retry semantics. TiDB's MySQL-compatible SQL and snapshot isolation require a separately reviewed, invariant-preserving protocol before it can enter a correctness-equivalent capacity comparison. Test many repositories and one contended ref separately, keeping acknowledged durability and fault domains comparable. A faster object-store metadata backend is not evidence that Deltrove domain SQL must move.
+
 Budget connections at **maximum deployment size including rollout surge**:
 
 ```text
@@ -150,6 +152,8 @@ Cache keys include repository, object/type and representation/derivation version
 
 Add a node or regional cache only when measured reuse/avoided origin load justifies it. It needs bounded disk/memory, miss coalescing, request quotas and a protected origin fallback. A failed regional cache must not unleash unbounded upstream fetches. Per-process semaphores do not enforce fleet-wide quotas: allocate budgets through bounded deployment sizes or enforce shared tenant/storage limits at a queue/gateway/provider boundary.
 
+The [cache research](research/shared-cache.md) and [evaluation plan](cache-evaluation-plan.md) compare optional Dragonfly/Valkey against no shared cache and Moka. Use shared KV caching for bounded immutable metadata/derived results where reuse justifies another network hop; evaluate NVMe/object-cache paths separately for larger content. Account for the entire fleet's memory, client connections, response allocations, fill concurrency and origin budget, including cache failure. Flush/restart, poisoning, cross-tenant access and restore-epoch tests are adoption gates. Cache TTL, invalidation delivery or a cache-held lock must never authorize landing, enforce exact quotas or fence a publisher independently of SQL.
+
 ## 7. Deployment stages and scale decisions
 
 | Stage | Deployment | Evidence required for the next step |
@@ -159,7 +163,7 @@ Add a node or regional cache only when measured reuse/avoided origin load justif
 | Organization read/compute scale | Multiple API replicas, worker classes, Postgres HA, replicated object storage | Load tests identify the API/worker tier as the constraint and demonstrate downstream headroom. |
 | Checkout-heavy fleet | Regional/node immutable caches and prewarming | Object reuse and origin bytes/QPS justify cost; cache-outage test preserves origin health. |
 | Many repositories | Route each repo to its owning metadata primary/shard | Migrate placement safely, preserving repo-local transaction boundaries and recovery. |
-| One enormous/hot repo | Separate graph/index placement experiment; potentially FoundationDB/TiKV | Demonstrated single-repo metadata bottleneck after query/index/vertical tuning. Benchmark a different storage model before committing to it. |
+| One enormous/hot repo | Separate graph/index placement and distributed SQL experiment (CockroachDB/TiDB after semantic gates); FoundationDB/TiKV remain separate KV redesign candidates | Demonstrated single-repo metadata bottleneck after query/index/vertical tuning, or an explicit regional-write requirement. Benchmark before adopting a different storage model. |
 
 A separately deployable Rust `cache` process mode is explicitly deferred until the checkout-heavy stage. It can share the binary/image then; the first release only needs in-process caching and `serve`/`api`/`worker`. A node daemon remains a separate client-side decision.
 

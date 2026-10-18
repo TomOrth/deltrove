@@ -138,3 +138,22 @@ All three agents reviewed the synthesized opportunity assessment. Refinements cl
 ## Product rename
 
 The project name changed from Open Scion to Deltrove after the OSS landscape review identified an independent project using OpenScion. This is a product naming and discoverability decision, not a change to the technical direction.
+
+## Distributed metadata and shared-cache evaluation follow-up
+
+On 17 October 2026 the user requested Luna agents to add CockroachDB/TiDB and Dragonfly/shared-cache evaluations to the research, roadmap and agent-ready tracker. Three GPT-6 Luna agents drafted [distributed metadata research](research/distributed-metadata.md), the [metadata evaluation](metadata-evaluation-plan.md), [shared-cache research](research/shared-cache.md), the [cache evaluation](cache-evaluation-plan.md), and [A14–A18 task cards](scaling-evaluation-issues.md). The primary agent reviewed the documents and upstream isolation/license sources, integrated the architecture summaries and reviewed the issue payloads. A metadata agent independently reviewed the cache protocol and cards. Follow-up agent turns reached their usage limit, so the primary agent completed the remaining corrections and integration.
+
+| Review finding | Disposition |
+| --- | --- |
+| Distributed SQL was only a broad future storage suggestion | Added thin F3/F5 compatibility/isolation investigation, conditional S6 capacity comparison and separate selected-engine migration/recovery acceptance. PostgreSQL remains the MVP authority; no production multi-database support is promised. |
+| TiDB Snapshot Isolation permits write skew | Require a reviewed invariant-preserving protocol and adversarial negative controls before admitting it to an authoritative-metadata capacity comparison. MySQL protocol/dialect is a separate adapter. |
+| PostgreSQL wire compatibility is not behavioral compatibility | CockroachDB must qualify SQLx, exact SQL/constraints/migrations, retry and unknown-outcome handling, job claims, fences and recovery. Current licensing and source availability are recorded, not assumed from older OSS descriptions. |
+| A shared cache can appear faster simply by adding hardware or replacing the wrong baseline | Compare Moka plus Valkey/Dragonfly against Moka alone; account for aggregate server/client/database/object/network resources. Label extra-resource and cost-normalized arms separately. Large-object NVMe caching remains a separate path. |
+| An external oracle cannot atomically observe a SQL commit | Use durable client acknowledgment evidence plus independent post-fault authoritative outcome/object read-back. Instrumentation supplements reconciliation rather than manufacturing atomic commit evidence. |
+| Cached checksums or immutable input keys do not authenticate derived output | Test forged payload plus checksum/input mapping. Require an independently trusted canonical digest/mapping or application authenticator; otherwise recompute before trusted use. Authorization, exact quotas, fencing and durable outcomes remain outside the cache. |
+| Cache availability versus safe degraded capacity | Cache outage may reduce capacity and cause bounded retryable rejection; it cannot lose accepted domain state, authorize stale mutations or unleash unbounded origin fallback. |
+| Planning/card drift | Corrected evaluation-plan paths and kept future measurements separate from dated research. A13/F5 consume bounded findings or explicit dated deferral; optional engine/cache adoption does not create unconditional MVP or enterprise release blockers. |
+
+Primary-source checks included [TiDB isolation](https://docs.pingcap.com/tidb/stable/transaction-isolation-levels/), [CockroachDB's September source notice](https://www.cockroachlabs.com/blog/source-code-protection/), [Dragonfly's current license](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md) and [Valkey's license](https://github.com/valkey-io/valkey/blob/unstable/COPYING). Source facts and proposed gates remain distinct. No database/cache experiment, migration, install, benchmark or production adoption was executed; document and tracker validation is not implementation acceptance.
+
+The primary agent created SCI-36–SCI-40 (A14–A18) in the existing Deltrove Linear project, set parent/milestone/prerequisite relations, and linked the affected F3/F5/S3/S5/S6/S7/S8/A13 issues without turning conditional review inputs into hard release blockers. The [tracking map](project-tracking.md) and JSON ledger record the exact issue identities.

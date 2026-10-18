@@ -15,9 +15,9 @@ Project-owned work is licensed under [Apache-2.0](../LICENSE). The implementatio
 
 | Milestone | Packages | Exit criteria |
 | --- | --- | --- |
-| Foundation and feasibility | F0–F5 | F0–F5: workload/acceptance contract, build and fault harness, PG/Temporal/Restate experiments, native format and local I/O evaluation, Git/reuse baseline and accepted architecture decisions. |
+| Foundation and feasibility | F0–F5 | F0–F5: workload/acceptance contract, build and fault harness, PG/Temporal/Restate experiments, native format/local I/O, bounded SQL compatibility/isolation and cache evaluation contract, Git/reuse baseline and accepted architecture decisions or explicit deferrals. |
 | Small-team MVP | M1–M8 | M1–M8: durable storage and domain/read APIs; sparse CLI and web review; CI/landing; Git migration; permissions; install/upgrade/restore; release evidence. Private alpha is M1–M4 plus the minimum M7 recovery subset; HA is separately qualified. |
-| Large-organization qualification | S1–S8 | S1–S8: explicit HA/durability profiles, API/worker scale, optional cache tiers and enterprise governance; workload-driven many-repo/hot-monorepo scaling, disaster recovery and enterprise qualification. |
+| Large-organization qualification | S1–S8 | S1–S8: explicit HA/durability, API/worker scale, optional Dragonfly/Valkey cache qualification and enterprise governance; workload-triggered distributed SQL comparison/migration, many-repo/hot-monorepo scaling, DR and advertised-capability release evidence. |
 
 ## Roadmap packages
 
@@ -65,3 +65,17 @@ Project-owned work is licensed under [Apache-2.0](../LICENSE). The implementatio
 | A13 | [SCI-35](https://linear.app/orth-projects-general/issue/SCI-35/a13-consolidated-decision-review) | F5 | Consolidated decision review | A08, A09, A10, A11, A12 |
 
 Begin with A01's workload fixtures, then A02's acceptance contract (drafting can overlap once A01 has a draft). F1 follows accepted F0; workflow/native/reuse experiments run after the shared harness. The [implementation roadmap](implementation-roadmap.md) contains the full sequencing and acceptance requirements.
+
+## Metadata and cache evaluation cards
+
+Created as Backlog and unassigned. These are bounded experiments; all implementation/test acceptance remains pending. [Full agent-ready payloads](scaling-evaluation-issues.json) include scope, ownership, references, prerequisites, deliverables, negative controls, fault cases and evidence handoff.
+
+| Card | Linear issue | Parent package | Work | Prerequisites |
+| --- | --- | --- | --- | --- |
+| A14 | [SCI-36](https://linear.app/orth-projects-general/issue/SCI-36/a14-common-metadatacache-evaluation-contract) | F3 | Common metadata/cache evaluation contract | F1 |
+| A15 | [SCI-37](https://linear.app/orth-projects-general/issue/SCI-37/a15-distributed-sql-compatibility-and-isolation-spike) | F3 | Distributed SQL compatibility and isolation spike | A14 |
+| A16 | [SCI-38](https://linear.app/orth-projects-general/issue/SCI-38/a16-shared-cache-qualification-shared-process-local-and-disk-baselines) | S3 | Shared-cache qualification: shared, process-local, and disk baselines | S2, A14 |
+| A17 | [SCI-39](https://linear.app/orth-projects-general/issue/SCI-39/a17-conditional-distributed-sql-capacity-comparison) | S6 | Conditional distributed SQL capacity comparison | S1, S2, A15 |
+| A18 | [SCI-40](https://linear.app/orth-projects-general/issue/SCI-40/a18-conditional-selected-engine-migration-restore-rollback-and-epoch) | S6 | Conditional selected-engine migration, restore, rollback, and epoch qualification | A17 |
+
+F3/F5 and A13 review A14/A15 findings or an explicit dated unsupported/defer disposition. Linear uses related links for these conditional review inputs; it does not add unconditional blockers to A13/F5. A16 is an adopt/defer/no-shared-cache decision. A17 starts only at its recorded capacity/regional requirement trigger; A18 runs only after an alternate engine is selected, otherwise records a skip. S8 requires implementation and recovery evidence for advertised options, not for deferred candidates. Original package dependencies and issue identities remain unchanged.
