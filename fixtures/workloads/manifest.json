@@ -1,0 +1,59 @@
+{
+  "manifest_version": 1,
+  "seed": 2301,
+  "profiles": {
+    "default": {
+      "wide_files": 64,
+      "deep_directory_components": 24,
+      "binary_objects": 8,
+      "repositories": 8,
+      "hot_repository_files": 256,
+      "long_waits": 12
+    },
+    "extended": {
+      "wide_files": 4096,
+      "deep_directory_components": 128,
+      "binary_objects": 64,
+      "repositories": 256,
+      "hot_repository_files": 16384,
+      "long_waits": 1000
+    }
+  },
+  "fixtures": [
+    {
+      "id": "tiny-graph",
+      "purpose": "five-node fork with two divergent branches and an ordered two-parent merge",
+      "payload": "synthetic graph JSON"
+    },
+    {
+      "id": "wide-tree",
+      "purpose": "directory fanout and narrow edits",
+      "payload": "text files in one directory"
+    },
+    {
+      "id": "deep-tree",
+      "purpose": "path depth and traversal bounds",
+      "payload": "one leaf beneath repeated directory components"
+    },
+    {
+      "id": "binary-mix",
+      "purpose": "binary object hashing and transfer paths",
+      "payload": "fixed-size SplitMix64 pseudorandom bytes plus a text marker"
+    },
+    {
+      "id": "many-repos",
+      "purpose": "repository routing and per-repository metadata overhead",
+      "payload": "one README per synthetic repository"
+    },
+    {
+      "id": "hot-repo",
+      "purpose": "large single-repository tree and skewed workload setup",
+      "payload": "many small source-like files"
+    },
+    {
+      "id": "long-ci-waits",
+      "purpose": "durable wait/callback orchestration cases",
+      "payload": "increasing synthetic durations and alternating callback order"
+    }
+  ]
+}
