@@ -1,0 +1,19 @@
+{
+  "name": "@deltrove/api-smoke",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "npm@10.9.2",
+  "scripts": {
+    "generate": "openapi-typescript ../../api/openapi.yaml -o src/generated/api.d.ts",
+    "build": "tsc --project tsconfig.json",
+    "smoke": "node dist/smoke.js"
+  },
+  "dependencies": {
+    "openapi-fetch": "0.13.8"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.10.1",
+    "typescript": "5.9.3"
+  }
+}
