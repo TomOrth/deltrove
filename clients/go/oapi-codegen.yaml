@@ -1,0 +1,5 @@
+package: deltroveclient
+output: generated/api.gen.go
+generate:
+  models: true
+  client: true

@@ -20,7 +20,7 @@ The checked-in manifest is the single source for seed, fixture IDs and profile s
 
 ## Reproduce
 
-Requires Rust/Cargo **1.95.0** for the recorded run. The scoped package under `tools/workloads` does not add a root workspace or the F1 build skeleton. `serde_json` 1.0.151 parses the manifest and serializes output; `sha2` 0.10.9 computes SHA-256. Exact direct and transitive versions are pinned in the package manifest and lockfile. From the repository root:
+Requires Rust/Cargo **1.95.0** for the recorded run. The fixture tool remains under `tools/workloads` and is now a member of the root F1 workspace. Repository-root invocations use the root `Cargo.lock`; the existing package lockfile remains alongside the package as its original standalone resolution record. `serde_json` 1.0.151 parses the manifest and serializes output; `sha2` 0.10.9 computes SHA-256. Exact direct and transitive versions are pinned. From the repository root:
 
 ```sh
 cargo run --locked --manifest-path tools/workloads/Cargo.toml -- all --out /tmp/workloads
@@ -28,7 +28,7 @@ cargo run --locked --manifest-path tools/workloads/Cargo.toml -- all --profile e
 cargo test --locked --manifest-path tools/workloads/Cargo.toml
 ```
 
-The output path must be absent or empty. To verify determinism, generate `all` into two empty directories and recursively compare them; generated file ordering and JSON serialization are stable. There is no external service, database, benchmark harness, or production VCS algorithm involved. The exact recorded invocations used `--offline --locked` because crates.io DNS was unavailable; pinned dependencies were cached locally.
+The output path must be absent or empty. To verify determinism, generate `all` into two empty directories and recursively compare them; generated file ordering and JSON serialization are stable. There is no external service, database, benchmark harness, or production VCS algorithm involved. The earlier A01 evidence was recorded before the root workspace existed and used `--offline --locked` because crates.io DNS was unavailable. Current repository-root invocations resolve through the root workspace lockfile.
 
 ## Recorded evidence
 

@@ -2,7 +2,7 @@
 
 Research and a proposed technical plan for an open-source, online-first source-control service inspired by [Anthropic's Scion article](https://www.anthropic.com/engineering/redesigning-source-control).
 
-This repository currently contains planning documents only. No VCS, service, CLI or web application is implemented.
+The implementation is at its build-contract skeleton stage. It includes a minimal Rust HTTP service and generated API clients; repository operations, persistence, authentication, CLI and web application are not implemented.
 
 Project-owned work is licensed under [Apache-2.0](LICENSE). Implementation work is tracked in the [Deltrove Linear project](https://linear.app/orth-projects-general/project/deltrove-438e1fe166bf); see the [roadmap-to-issue map](docs/project-tracking.md) and [contribution guide](CONTRIBUTING.md) before taking a task.
 
@@ -21,6 +21,10 @@ Project-owned work is licensed under [Apache-2.0](LICENSE). Implementation work 
 The selected server language is **Rust**. The current client proposal remains Go/Cobra, with React/TypeScript/Vite for the web application, PostgreSQL for metadata, immutable filesystem/S3-compatible object storage and local SQLite. The plan starts with a self-hostable MVP and identifies the additional work needed for a large-organization platform. C and C++ are excluded as implementation choices.
 
 Begin with roadmap packages F0/F1, then run workflow, native-format and Git/reuse feasibility tracks in parallel. Temporal and Restate are evaluated before expanding workflow machinery; Restate's BSL-licensed server and MIT SDK are distinguished in the adoption gate. No engine is assumed to make PostgreSQL, objects and CI one ACID transaction.
+
+## Build-contract skeleton
+
+See [the DEL-25 build and contract handoff](docs/foundation/build-contract-skeleton.md) for pinned prerequisites, build commands, API scope and evidence. The root Cargo workspace includes the existing workload fixture tool. The API source of truth is `api/openapi.yaml`; Go and TypeScript outputs are generated from it.
 
 ## Research memos
 
