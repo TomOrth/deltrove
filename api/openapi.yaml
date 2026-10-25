@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: Deltrove provisional service API
+  version: 0.1.0
+  description: >-
+    Initial build-contract API. This schema is provisional and does not freeze
+    canonical repository formats, production operation semantics, or identity.
+servers:
+  - url: http://127.0.0.1:8080
+paths:
+  /health/live:
+    get:
+      operationId: getHealthLive
+      summary: Check that the process can answer requests.
+      responses:
+        '200':
+          description: The process is alive.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+  /health/ready:
+    get:
+      operationId: getHealthReady
+      summary: Check that process initialization completed.
+      description: Does not claim external services or future dependencies were checked.
+      responses:
+        '200':
+          description: Process initialization is complete.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+        '503':
+          description: Process initialization is incomplete.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /v1/operations/{operation_id}:
+    get:
+      operationId: getOperation
+      summary: Look up an operation outcome.
+      description: >-
+        The skeleton does not accept or persist operations. This route currently
+        returns the typed not-found problem for every identifier.
+      parameters:
+        - name: operation_id
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '200':
+          description: The operation outcome, when operation persistence is implemented.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+        '404':
+          description: No operation with this identifier exists.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+components:
+  schemas:
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [alive, ready]
+    Operation:
+      description: Provisional schema only; this service does not create operation records.
+      type: object
+      additionalProperties: false
+      required: [operation_id, status]
+      properties:
+        operation_id:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum: [queued, running, succeeded, failed, cancelled]
+        error:
+          $ref: '#/components/schemas/Problem'
+    Problem:
+      type: object
+      additionalProperties: false
+      required: [type, title, status, code, detail, retryable]
+      properties:
+        type:
+          type: string
+          format: uri-reference
+        title:
+          type: string
+        status:
+          type: integer
+          minimum: 400
+          maximum: 599
+        code:
+          type: string
+        detail:
+          type: string
+        retryable:
+          type: boolean
