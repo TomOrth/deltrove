@@ -1,0 +1,30 @@
+name: Domain transaction fixture
+on:
+  push:
+  pull_request:
+jobs:
+  postgres:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:15.10
+        env:
+          POSTGRES_USER: del26
+          POSTGRES_PASSWORD: fixture-only
+          POSTGRES_DB: domain_fixture
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U del26 -d domain_fixture"
+          --health-interval 2s
+          --health-timeout 2s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://del26:fixture-only@localhost:5432/domain_fixture
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.95.0
+          components: rustfmt, clippy
+      - run: cargo test --locked -p domain-fixture --test postgres -- --ignored --test-threads=1

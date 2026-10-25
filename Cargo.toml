@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["crates/deltrove-api", "tools/workloads"]
+members = ["crates/deltrove-api", "crates/domain-fixture", "tools/workloads"]
 
 [workspace.package]
 edition = "2024"
