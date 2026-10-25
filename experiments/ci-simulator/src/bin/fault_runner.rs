@@ -1,6 +1,6 @@
 use std::{
     io::{BufRead, BufReader, Write},
-    process::{Child, ChildStdin, Command, Stdio},
+    process::{Child, ChildStdin, Command, ExitStatus, Stdio},
     sync::mpsc,
     thread,
     time::Duration,
@@ -79,6 +79,22 @@ impl OwnedTarget {
         writeln!(self.stdin, "{command}")?;
         self.stdin.flush()?;
         self.expect_line(response, Duration::from_secs(3))
+    }
+
+    fn wait(&mut self, timeout: Duration) -> Result<ExitStatus, Box<dyn std::error::Error>> {
+        let deadline = std::time::Instant::now() + timeout;
+        loop {
+            if let Some(status) = self.child.try_wait()? {
+                self.reaped = true;
+                return Ok(status);
+            }
+            let remaining = deadline.saturating_duration_since(std::time::Instant::now());
+            if remaining.is_zero() {
+                // Leave cleanup to Drop so a timed-out target is killed and reaped.
+                return Err("deadline waiting for owned child exit".into());
+            }
+            thread::sleep(remaining.min(Duration::from_millis(10)));
+        }
     }
 
     #[cfg(unix)]
@@ -163,8 +179,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             restarted.command("ping", "PONG")?;
             writeln!(restarted.stdin, "exit")?;
             restarted.stdin.flush()?;
-            let status = restarted.child.wait()?;
-            restarted.reaped = true;
+            let status = restarted.wait(Duration::from_secs(3))?;
             if !status.success() {
                 return Err(format!("restarted target exited with {status}").into());
             }
@@ -174,4 +189,58 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     Ok(())
+}
+
+#[cfg(all(test, unix))]
+mod tests {
+    use super::*;
+
+    fn target(script: &str) -> OwnedTarget {
+        let mut child = Command::new("/bin/sh")
+            .args(["-c", script])
+            .stdin(Stdio::piped())
+            .spawn()
+            .unwrap();
+        let stdin = child.stdin.take().unwrap();
+        let (_, lines) = mpsc::channel();
+        OwnedTarget {
+            child,
+            stdin,
+            lines,
+            reaped: false,
+        }
+    }
+
+    #[test]
+    fn wait_preserves_exit_status_and_marks_child_reaped() {
+        let mut target = target("exit 7");
+        let status = target.wait(Duration::from_secs(3)).unwrap();
+        assert_eq!(status.code(), Some(7));
+        assert!(target.reaped);
+    }
+
+    #[test]
+    fn wait_times_out_and_drop_kills_and_reaps_unresponsive_child() {
+        let mut target = target("while IFS= read -r command; do :; done");
+        let pid = target.child.id() as i32;
+        writeln!(target.stdin, "exit").unwrap();
+        target.stdin.flush().unwrap();
+
+        let error = target.wait(Duration::from_millis(50)).unwrap_err();
+        assert_eq!(error.to_string(), "deadline waiting for owned child exit");
+        assert!(!target.reaped);
+        assert!(target.child.try_wait().unwrap().is_none());
+        drop(target);
+
+        let mut status = 0;
+        // SAFETY: pid identifies our child and status is writable; WNOHANG cannot block.
+        assert_eq!(
+            unsafe { libc::waitpid(pid, &mut status, libc::WNOHANG) },
+            -1
+        );
+        assert_eq!(
+            std::io::Error::last_os_error().raw_os_error(),
+            Some(libc::ECHILD)
+        );
+    }
 }
