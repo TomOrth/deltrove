@@ -1,0 +1,18 @@
+[package]
+name = "domain-fixture"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = "=1.0.151"
+sha2 = "=0.10.9"
+sqlx = { version = "=0.8.6", default-features = false, features = ["runtime-tokio", "postgres"] }
+thiserror = "=2.0.17"
+tokio = { version = "=1.48.0", features = ["macros", "rt-multi-thread", "time", "process", "io-util", "io-std", "sync"] }
+
+[lints]
+workspace = true
