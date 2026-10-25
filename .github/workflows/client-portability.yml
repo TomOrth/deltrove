@@ -1,0 +1,83 @@
+name: client portability
+
+on:
+  push:
+    paths:
+      - "clients/go/**"
+      - "experiments/client-portability/**"
+      - ".github/workflows/client-portability.yml"
+  pull_request:
+    paths:
+      - "clients/go/**"
+      - "experiments/client-portability/**"
+      - ".github/workflows/client-portability.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            goos: linux
+            goarch: amd64
+          - os: macos-14
+            goos: darwin
+            goarch: arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.3"
+          cache-dependency-path: experiments/client-portability/go.sum
+      - name: Assert native toolchain target
+        env:
+          EXPECTED_GOOS: ${{ matrix.goos }}
+          EXPECTED_GOARCH: ${{ matrix.goarch }}
+        run: |
+          test "$(go env GOHOSTOS)" = "$EXPECTED_GOOS"
+          test "$(go env GOHOSTARCH)" = "$EXPECTED_GOARCH"
+      - name: Vet and race tests
+        working-directory: experiments/client-portability
+        run: |
+          go vet ./...
+          go test -race ./...
+      - name: Native build
+        working-directory: experiments/client-portability
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          mkdir -p dist
+          go build -trimpath -buildvcs=false -ldflags '-s -w -X main.version=0.1.0-spike' -o dist/deltrove ./cmd/deltrove
+
+  cross-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: arm64
+          - goos: darwin
+            goarch: amd64
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.3"
+          cache-dependency-path: experiments/client-portability/go.sum
+      - name: Cross compile (compile evidence only)
+        working-directory: experiments/client-portability
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          mkdir -p dist
+          go build -trimpath -buildvcs=false -ldflags '-s -w -X main.version=0.1.0-spike' -o dist/deltrove-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/deltrove
