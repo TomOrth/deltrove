@@ -1,12 +1,12 @@
 # Contributing to Deltrove
 
-Deltrove is currently a planning-stage project. Architecture, experiments and acceptance gates are documented in the [implementation roadmap](docs/implementation-roadmap.md); implementation has not started.
+Deltrove has a minimal build-contract skeleton. Product implementation remains at the foundation stage; architecture, experiments and acceptance gates are documented in the [implementation roadmap](docs/implementation-roadmap.md).
 
 Work is tracked in the [Deltrove Linear project](https://linear.app/orth-projects-general/project/deltrove-438e1fe166bf). The [tracking map](docs/project-tracking.md) connects roadmap IDs to Linear issues. Repository documents own architecture and acceptance semantics; Linear owns current status, dependencies and assignments. There is no automatic bidirectional synchronization configured.
 
 ## Picking up work
 
-1. Read the relevant roadmap package and its prerequisites. Start with F0's A01/A02 cards before the build/harness work in F1.
+1. Read the relevant roadmap package and its prerequisites. Start with F0's A01/A02 cards before the build/harness work in F1. DEL-25 build instructions are in [the foundation handoff](docs/foundation/build-contract-skeleton.md).
 2. Claim or coordinate the Linear issue, identify owned paths and use the roadmap handoff template. Coordinate changes to shared schemas, migrations, canonical formats and test fixtures with the integrating owner.
 3. Keep changes reviewable and scoped to the accepted task. Include the Linear identifier in the branch name and pull request description so the work can be traced.
 4. Run the acceptance checks appropriate to the change. Record exact commands, versions, results and remaining limitations; label unavailable checks **not run**. Documentation checks do not establish product correctness or performance.
